@@ -4,10 +4,10 @@
 <div class="row justify-content-center">
     <div class="col-md-11">
         
-        <div class="d-flex justify-content-between align-items-end mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold mb-0 text-dark">Antrean <span class="text-success">Servis</span></h2>
-                <p class="text-muted mb-0">Daftar kendaraan yang masuk ke bengkel hari ini.</p>
+                <p class="text-muted mb-0">Sistem E-Bengkel - Daftar perbaikan kendaraan.</p>
             </div>
             
             <a href="{{ route('kendaraan.create') }}" class="btn btn-emerald shadow-sm px-4">
@@ -28,12 +28,12 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th class="ps-4 py-3 text-uppercase fs-7 fw-bold text-secondary" style="width: 5%">No</th>
-                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary" style="width: 15%">Plat Nomor</th>
-                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary" style="width: 20%">Pemilik</th>
-                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary" style="width: 15%">Merk</th>
+                                <th class="ps-4 py-3 text-uppercase fs-7 fw-bold text-secondary">No</th>
+                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary">Plat Nomor</th>
+                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary">Nama Pemilik</th>
+                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary">Merk</th>
                                 <th class="py-3 text-uppercase fs-7 fw-bold text-secondary">Keluhan</th>
-                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary text-center" style="width: 15%">Aksi</th>
+                                <th class="py-3 text-uppercase fs-7 fw-bold text-secondary text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,20 +47,27 @@
                                 <td>{{ $k->merk_kendaraan }}</td>
                                 <td class="text-muted small">{{ $k->keluhan }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('kendaraan.edit', $k->id) }}" class="btn btn-sm btn-warning px-3 rounded-pill shadow-sm">
-                                        <i class="fas fa-edit me-1"></i> Edit
-                                    </a>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        
+                                        <a href="{{ route('kendaraan.edit', $k->id) }}" class="btn btn-sm btn-warning px-3 rounded-pill shadow-sm">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
 
-                                    {{-- Tombol Hapus nanti di sini --}}
+                                        <form action="{{ route('kendaraan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Hapus kendaraan dari antrean?')">
+                                            @csrf
+                                            @method('DELETE') <button type="submit" class="btn btn-sm btn-danger px-3 rounded-pill shadow-sm">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </button>
+                                        </form>
+
+                                    </div>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-5">
-                                    <div class="text-muted">
-                                        <i class="fas fa-car-crash fa-3x mb-3 opacity-25"></i>
-                                        <p class="mb-0">Belum ada antrean kendaraan.</p>
-                                    </div>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
+                                    <p>Belum ada data kendaraan dalam antrean.</p>
                                 </td>
                             </tr>
                             @endforelse
